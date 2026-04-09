@@ -82,6 +82,7 @@ MEDICAL / NOTES
 {reg.medical or 'None'}
 """.strip()
 
+    # 1. Create GHL contact
     result = await call_tool(
         source_id="highlevel_oauth__pipedream",
         tool_name="highlevel_oauth-create-contact",
@@ -101,6 +102,48 @@ MEDICAL / NOTES
             }
         }
     )
+
+    # 2. Send email notifications to both addresses
+    email_subject = f"New Camp Registration: {player_name} — {len(reg.weeks)} week(s) / ${total}"
+    email_body = f"""New registration received from the Aces Baseball Academy landing page.
+
+{'='*60}
+PLAYER: {player_name}
+AGE: {reg.age or 'N/A'} | DOB: {reg.dob or 'N/A'}
+SKILL LEVEL: {reg.skill_level or 'N/A'}
+POSITION: {reg.position or 'N/A'}
+{'='*60}
+PARENT/GUARDIAN: {reg.parent_name} ({reg.relationship or 'Parent'})
+EMAIL: {reg.email}
+PHONE: {reg.phone}
+EMERGENCY: {reg.emergency_name or 'N/A'} — {reg.emergency_phone or 'N/A'}
+{'='*60}
+WEEKS SELECTED: {weeks_str}
+TOTAL DUE: ${total}
+{'='*60}
+MEDICAL/NOTES: {reg.medical or 'None'}
+{'='*60}
+
+This contact has been added to GoHighLevel with tags:
+Summer Camp 2026, Baseball Camp, Aces Baseball Academy
+
+— Aces Baseball Academy Registration System
+"""
+
+    notify_emails = ["launchgloble@gmail.com", "info@acesacademy.net"]
+    for addr in notify_emails:
+        try:
+            await call_tool(
+                source_id="gcal",
+                tool_name="send_email",
+                arguments={
+                    "to": addr,
+                    "subject": email_subject,
+                    "body": email_body,
+                }
+            )
+        except Exception as e:
+            print(f"[EMAIL] Could not send to {addr}: {e}")
 
     return {"success": True, "contact": result}
 
