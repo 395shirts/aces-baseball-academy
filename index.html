@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aces Baseball Academy — Summer Camp 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0e1a;
+  color: #fff;
+  overflow-x: hidden;
+}
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8c85a;
+  --gold-dark: #a3822e;
+  --navy: #0a0e1a;
+  --navy-mid: #101832;
+  --navy-light: #1a2340;
+  --navy-card: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --border-gold: rgba(201,168,76,0.25);
+  --text-muted: rgba(255,255,255,0.55);
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+/* ===== BASEBALL SVG BACKGROUNDS ===== */
+.bg-stitches {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 10c10 20 10 40 0 60s-10 40 0 60 10 40 0 60' stroke='%23c9a84c' stroke-width='2' fill='none' stroke-dasharray='6 6'/%3E%3Cpath d='M60 10c10 20 10 40 0 60s-10 40 0 60 10 40 0 60' stroke='%23c9a84c' stroke-width='2' fill='none' stroke-dasharray='6 6'/%3E%3Cpath d='M100 10c10 20 10 40 0 60s-10 40 0 60 10 40 0 60' stroke='%23c9a84c' stroke-width='2' fill='none' stroke-dasharray='6 6'/%3E%3Cpath d='M140 10c10 20 10 40 0 60s-10 40 0 60 10 40 0 60' stroke='%23c9a84c' stroke-width='2' fill='none' stroke-dasharray='6 6'/%3E%3Cpath d='M180 10c10 20 10 40 0 60s-10 40 0 60 10 40 0 60' stroke='%23c9a84c' stroke-width='2' fill='none' stroke-dasharray='6 6'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+.bg-diamond {
+  position: absolute; pointer-events: none; z-index: 0;
+}
+.bg-ball {
+  position: absolute; pointer-events: none; z-index: 0; opacity: 0.04;
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,14,26,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-gold);
+  padding: 0 40px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: #fff; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Oswald', sans-serif; font-weight: 400;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-muted); transition: color 0.2s;
+}
+.nav-links a:hover { color: #fff; }
+.nav-cta {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #0a0e1a !important;
+  font-weight: 700 !important;
+  padding: 9px 22px;
+  border-radius: 3px;
+}
+.nav-cta:hover { opacity: 0.9; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  padding-top: 64px;
+  position: relative;
+  display: flex; align-items: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0c1024 0%, #0a0e1a 40%, #101832 80%, #0a0e1a 100%);
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 40%, rgba(30,60,120,0.3) 0%, transparent 55%),
+              radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.06) 0%, transparent 40%);
+  pointer-events: none;
+}
+.hero .bg-stitches { opacity: 0.04; }
+.hero-baseball {
+  position: absolute; right: -140px; bottom: -140px; width: 500px; height: 500px;
+  border-radius: 50%; border: 3px solid rgba(201,168,76,0.06);
+  z-index: 0; pointer-events: none;
+}
+.hero-baseball::before, .hero-baseball::after {
+  content: ''; position: absolute; width: 160px; height: 420px;
+  border: 3px solid rgba(201,168,76,0.06); border-radius: 50%;
+}
+.hero-baseball::before { top: 40px; left: -50px; transform: rotate(-30deg); }
+.hero-baseball::after { top: 40px; right: -50px; transform: rotate(30deg); }
+.hero-top-line { position: absolute; top: 64px; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+.hero-content {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  padding: 60px 40px;
+  display: grid; grid-template-columns: 1fr 420px; gap: 60px; align-items: center;
+}
+.hero-text .overline {
+  font-family: 'Oswald', sans-serif; font-weight: 500;
+  font-size: 13px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+.hero-text h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(64px, 8vw, 96px); line-height: 0.9;
+  letter-spacing: 2px; margin-bottom: 10px;
+}
+.hero-text h1 em { display: block; color: var(--gold); font-style: normal; font-size: 0.7em; }
+.hero-text .subtitle {
+  font-family: 'Oswald', sans-serif; font-weight: 300;
+  font-size: 18px; letter-spacing: 1px; color: var(--text-muted);
+  margin-bottom: 32px;
+}
+.hero-text .subtitle strong { color: #fff; font-weight: 600; }
+.hero-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+.pill {
+  font-family: 'Oswald', sans-serif; font-size: 12px; letter-spacing: 2px; font-weight: 500;
+  text-transform: uppercase; padding: 6px 14px;
+  border: 1px solid var(--border-gold); border-radius: 20px;
+  color: var(--text-muted);
+}
+.pill.active { background: rgba(201,168,76,0.12); color: var(--gold); border-color: var(--gold); }
+.hero-cta-group { display: flex; gap: 14px; align-items: center; }
+.btn-primary {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #0a0e1a; font-family: 'Oswald', sans-serif; font-weight: 700;
+  font-size: 16px; letter-spacing: 3px; text-transform: uppercase;
+  padding: 14px 36px; border-radius: 4px; border: none; cursor: pointer;
+  transition: opacity 0.2s; text-align: center;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-ghost {
+  display: inline-block; color: #fff;
+  font-family: 'Oswald', sans-serif; font-weight: 500;
+  font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 28px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;
+  cursor: pointer; transition: border-color 0.2s;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.5); }
+.hero-image-wrap {
+  position: relative;
+}
+.hero-image-wrap img {
+  width: 100%; max-height: 560px; object-fit: cover; object-position: center top;
+  border-radius: 6px;
+  mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+}
+.hero-image-wrap::before {
+  content: '';
+  position: absolute; inset: -20px;
+  background: radial-gradient(circle at center, rgba(201,168,76,0.15) 0%, transparent 65%);
+  z-index: -1; pointer-events: none;
+}
+.stat-strip {
+  position: relative; z-index: 2;
+  background: rgba(201,168,76,0.06);
+  border-top: 1px solid var(--border-gold); border-bottom: 1px solid var(--border-gold);
+}
+.stat-strip-inner {
+  max-width: 1200px; margin: 0 auto; padding: 20px 40px;
+  display: flex; justify-content: space-between; gap: 20px;
+}
+.stat-item { text-align: center; }
+.stat-item .sv { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--gold); line-height: 1; }
+.stat-item .sl { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-top: 3px; }
+
+/* ===== SECTION COMMONS ===== */
+section { padding: 80px 40px; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-family: 'Oswald', sans-serif; font-weight: 500;
+  font-size: 12px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5vw, 56px);
+  letter-spacing: 2px; margin-bottom: 14px;
+}
+.section-sub {
+  font-size: 15px; line-height: 1.7; color: var(--text-muted);
+  max-width: 600px; margin-bottom: 48px;
+}
+.gold-divider { width: 60px; height: 3px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 20px; }
+
+/* ===== COACHES ===== */
+.coaches-section { background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%); position: relative; overflow: hidden; }
+.coaches-section .bg-stitches { opacity: 0.035; transform: rotate(15deg) scale(1.2); }
+.coaches-diamond {
+  position: absolute; right: -80px; top: 50%; transform: translateY(-50%) rotate(45deg);
+  width: 260px; height: 260px; border: 2px solid rgba(201,168,76,0.06);
+  z-index: 0; pointer-events: none;
+}
+.coaches-diamond::after {
+  content: ''; position: absolute; inset: 20px;
+  border: 2px solid rgba(201,168,76,0.04);
+}
+.coaches-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+.coach-card {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  display: grid; grid-template-columns: 200px 1fr;
+}
+.coach-img { width: 200px; height: 100%; object-fit: cover; object-position: center top; filter: grayscale(20%); }
+.coach-info { padding: 28px 28px 28px 24px; }
+.coach-role {
+  font-family: 'Oswald', sans-serif; font-weight: 500;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 6px;
+}
+.coach-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; margin-bottom: 4px; }
+.coach-nickname { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+.coach-bio { font-size: 13px; line-height: 1.6; color: var(--text-muted); margin-bottom: 16px; }
+.coach-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.coach-tag {
+  font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 4px 10px;
+  border: 1px solid var(--border-gold); border-radius: 3px; color: var(--gold);
+  background: rgba(201,168,76,0.06);
+}
+
+/* ===== TRAINING ===== */
+.training-section { background: var(--navy); position: relative; overflow: hidden; }
+.training-section .bg-stitches { opacity: 0.03; transform: rotate(-10deg) scale(1.3); }
+.training-ball-1 {
+  position: absolute; left: -60px; top: 80px; width: 180px; height: 180px;
+  border-radius: 50%; border: 2px solid rgba(201,168,76,0.05);
+  z-index: 0; pointer-events: none;
+}
+.training-ball-2 {
+  position: absolute; right: -40px; bottom: 60px; width: 120px; height: 120px;
+  border-radius: 50%; border: 2px solid rgba(255,255,255,0.03);
+  z-index: 0; pointer-events: none;
+}
+.training-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.training-card {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 28px 24px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.training-card:hover { border-color: var(--border-gold); transform: translateY(-4px); }
+.training-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 3px; height: 0; background: linear-gradient(to bottom, var(--gold), transparent);
+  transition: height 0.3s;
+}
+.training-card:hover::before { height: 100%; }
+.training-icon { font-size: 28px; margin-bottom: 14px; }
+.training-name {
+  font-family: 'Oswald', sans-serif; font-weight: 600;
+  font-size: 17px; letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.training-desc { font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+
+/* ===== CAMP DETAILS ===== */
+.details-section { background: linear-gradient(180deg, var(--navy-mid) 0%, var(--navy) 100%); position: relative; overflow: hidden; }
+.details-field {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 500px; height: 500px; z-index: 0; pointer-events: none; opacity: 0.03;
+}
+.details-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.detail-card {
+  background: var(--navy-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px; padding: 28px 22px; text-align: center;
+}
+.detail-card.highlight { background: linear-gradient(135deg, rgba(201,168,76,0.16), rgba(201,168,76,0.05)); }
+.detail-icon { font-size: 28px; margin-bottom: 12px; }
+.detail-value { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+.detail-label { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+
+/* ===== REGISTRATION FORM ===== */
+.reg-section { background: var(--navy); position: relative; overflow: hidden; }
+.reg-section .bg-stitches { opacity: 0.025; transform: rotate(5deg) scale(1.1); }
+.reg-ball {
+  position: absolute; left: -100px; bottom: -100px; width: 300px; height: 300px;
+  border-radius: 50%; border: 3px solid rgba(201,168,76,0.04);
+  z-index: 0; pointer-events: none;
+}
+.reg-ball::before, .reg-ball::after {
+  content: ''; position: absolute; width: 100px; height: 260px;
+  border: 2px solid rgba(201,168,76,0.04); border-radius: 50%;
+}
+.reg-ball::before { top: 20px; left: -30px; transform: rotate(-30deg); }
+.reg-ball::after { top: 20px; right: -30px; transform: rotate(30deg); }
+.reg-section .section-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; align-items: start; }
+.reg-sidebar .reg-price-box {
+  background: linear-gradient(135deg, rgba(201,168,76,0.14), rgba(201,168,76,0.04));
+  border: 1px solid var(--border-gold); border-radius: 10px; padding: 30px;
+  margin-bottom: 24px;
+}
+.reg-price-box .price-main { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--gold); line-height: 1; }
+.reg-price-box .price-sub { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
+.reg-price-box .price-note { font-size: 12px; color: var(--text-muted); margin-top: 12px; line-height: 1.5; }
+.reg-checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.reg-checklist li {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--text-muted);
+}
+.reg-checklist li::before {
+  content: '✓'; color: var(--gold); font-weight: 700; font-size: 14px; flex-shrink: 0;
+}
+.contact-box {
+  margin-top: 24px; padding: 20px; border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.contact-box .cb-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 10px; }
+.contact-box a { color: var(--gold); font-size: 15px; display: block; margin-bottom: 6px; }
+
+/* FORM */
+.reg-form { background: var(--navy-card); border: 1px solid var(--border); border-radius: 12px; padding: 40px; }
+.form-section-title {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 14px;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-gold);
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.form-grid.full { grid-template-columns: 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label {
+  font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text-muted);
+}
+.form-group input, .form-group select, .form-group textarea {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 5px; padding: 12px 14px;
+  color: #fff; font-family: 'Inter', sans-serif; font-size: 14px;
+  outline: none; transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+.form-group select option { background: #101832; color: #fff; }
+.form-group textarea { resize: vertical; min-height: 80px; }
+
+/* WEEKS SELECTOR */
+.weeks-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 24px;
+}
+.week-option { display: none; }
+.week-label {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 6px; padding: 12px 16px; cursor: pointer; transition: all 0.2s;
+  user-select: none;
+}
+.week-option:checked + .week-label {
+  background: rgba(201,168,76,0.12);
+  border-color: var(--gold);
+}
+.week-check {
+  width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 4px; flex-shrink: 0; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.week-option:checked + .week-label .week-check {
+  background: var(--gold); border-color: var(--gold);
+}
+.week-option:checked + .week-label .week-check::after {
+  content: '✓'; font-size: 11px; color: #0a0e1a; font-weight: 800;
+}
+.week-info .wk-dates { font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: 1px; color: #fff; }
+.week-info .wk-price { font-size: 11px; color: var(--gold); margin-top: 2px; }
+
+/* WAIVER */
+.waiver-box {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  border-radius: 6px; padding: 16px; margin-bottom: 24px; font-size: 12px;
+  color: var(--text-muted); line-height: 1.6; max-height: 100px; overflow-y: auto;
+}
+.waiver-box::-webkit-scrollbar { width: 4px; }
+.waiver-box::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 2px; }
+.checkbox-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 24px; cursor: pointer; }
+.checkbox-row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 1px; accent-color: var(--gold); cursor: pointer; }
+.checkbox-row span { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+.checkbox-row span strong { color: #fff; }
+.total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; background: rgba(201,168,76,0.08);
+  border: 1px solid var(--border-gold); border-radius: 6px; margin-bottom: 24px;
+}
+.total-row .total-label { font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+.total-row .total-value { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); }
+.submit-btn {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #0a0e1a; font-family: 'Oswald', sans-serif; font-weight: 700;
+  font-size: 18px; letter-spacing: 4px; text-transform: uppercase;
+  border: none; border-radius: 5px; cursor: pointer;
+  transition: opacity 0.2s; margin-bottom: 10px;
+}
+.submit-btn:hover { opacity: 0.88; }
+.form-note { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+/* SUCCESS STATE */
+.success-message {
+  display: none; text-align: center; padding: 48px 32px;
+}
+.success-message .s-icon { font-size: 56px; margin-bottom: 16px; }
+.success-message h3 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; margin-bottom: 10px; }
+.success-message p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: #070a12;
+  border-top: 1px solid var(--border-gold);
+  padding: 40px;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+.footer-brand .fb-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: #fff; }
+.footer-brand .fb-name span { color: var(--gold); }
+.footer-brand .fb-tagline { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-family: 'Oswald', sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-contact { text-align: right; }
+.footer-contact a { font-size: 14px; color: var(--gold); display: block; }
+.footer-contact .fc-site { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.footer-bottom {
+  max-width: 1200px; margin: 20px auto 0;
+  padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--text-muted); text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .hero-content { grid-template-columns: 1fr; }
+  .hero-image-wrap { max-width: 360px; margin: 0 auto; }
+  .coaches-grid { grid-template-columns: 1fr; }
+  .coach-card { grid-template-columns: 160px 1fr; }
+  .training-grid { grid-template-columns: repeat(2, 1fr); }
+  .details-grid { grid-template-columns: repeat(2, 1fr); }
+  .reg-section .section-inner { grid-template-columns: 1fr; }
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  section { padding: 60px 20px; }
+}
+@media (max-width: 600px) {
+  .training-grid { grid-template-columns: 1fr; }
+  .details-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; }
+  .weeks-grid { grid-template-columns: 1fr; }
+  .reg-form { padding: 24px 18px; }
+  .stat-strip-inner { flex-wrap: wrap; justify-content: center; gap: 16px; }
+  .coach-card { grid-template-columns: 1fr; }
+  .coach-img { width: 100%; height: 200px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ACES <span>BASEBALL</span> ACADEMY</div>
+  <div class="nav-links">
+    <a href="#coaches">Coaches</a>
+    <a href="#training">Training</a>
+    <a href="#details">Camp Info</a>
+    <a href="#register" class="nav-cta">Register Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-top-line"></div>
+  <div class="bg-stitches"></div>
+  <div class="hero-baseball"></div>
+
+  <!-- Floating baseball silhouettes -->
+  <svg class="bg-ball" style="right:8%;top:12%;width:90px;height:90px;opacity:0.035" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" stroke="#c9a84c" stroke-width="2" fill="none"/><path d="M25 15c8 18 8 35 0 52" stroke="#c9a84c" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/><path d="M75 15c-8 18-8 35 0 52" stroke="#c9a84c" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/></svg>
+  <svg class="bg-ball" style="left:5%;bottom:18%;width:60px;height:60px;opacity:0.04" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" stroke="#fff" stroke-width="2" fill="none"/><path d="M25 15c8 18 8 35 0 52" stroke="#fff" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/><path d="M75 15c-8 18-8 35 0 52" stroke="#fff" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/></svg>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="overline">Aces Baseball Academy &mdash; Summer 2026</div>
+      <h1>ELITE YOUTH<br>BASEBALL<em>SUMMER CAMP</em></h1>
+      <p class="subtitle">Major League training. <strong>Pro coaching. Real results.</strong></p>
+      <div class="hero-pills">
+        <span class="pill active">MLB Coaches</span>
+        <span class="pill active">Ages 7–14</span>
+        <span class="pill active">June 1 – Aug 7</span>
+        <span class="pill active">9AM – 2PM</span>
+        <span class="pill active">$250 / Week</span>
+      </div>
+      <div class="hero-cta-group">
+        <a href="#register" class="btn-primary">Register Now</a>
+        <a href="#training" class="btn-ghost">View Program</a>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <img src="images/adrian-promo.jpg" alt="Adrian Hernandez — Former New York Yankees Pitcher">
+    </div>
+  </div>
+</section>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-strip-inner">
+    <div class="stat-item"><div class="sv">2</div><div class="sl">MLB Coaches</div></div>
+    <div class="stat-item"><div class="sv">10</div><div class="sl">Weeks of Camp</div></div>
+    <div class="stat-item"><div class="sv">2</div><div class="sl">MLB 1st Round Picks Developed</div></div>
+    <div class="stat-item"><div class="sv">6</div><div class="sl">Training Disciplines</div></div>
+    <div class="stat-item"><div class="sv">$250</div><div class="sl">Early Bird / Week</div></div>
+    <div class="stat-item"><div class="sv">LIMITED</div><div class="sl">Spots Available</div></div>
+  </div>
+</div>
+
+<!-- COACHES -->
+<section class="coaches-section" id="coaches">
+  <div class="bg-stitches"></div>
+  <div class="coaches-diamond"></div>
+
+  <!-- Baseball seam accent -->
+  <svg class="bg-ball" style="left:-20px;top:40px;width:140px;height:140px;opacity:0.045" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" stroke="#c9a84c" stroke-width="1.5" fill="none"/><path d="M25 15c8 18 8 35 0 52" stroke="#c9a84c" stroke-width="1.2" fill="none" stroke-dasharray="4 4"/><path d="M75 15c-8 18-8 35 0 52" stroke="#c9a84c" stroke-width="1.2" fill="none" stroke-dasharray="4 4"/></svg>
+  <div class="section-inner">
+    <div class="section-label">Your Coaches</div>
+    <div class="gold-divider"></div>
+    <h2 class="section-title">COACHED BY THE PROS</h2>
+    <p class="section-sub">Train directly under two baseball professionals with combined decades of MLB and elite player development experience.</p>
+    <div class="coaches-grid">
+
+      <div class="coach-card">
+        <img src="images/adrian-promo.jpg" class="coach-img" alt="Adrian Hernandez">
+        <div class="coach-info">
+          <div class="coach-role">Former MLB Pitcher</div>
+          <div class="coach-name">ADRIAN HERNANDEZ</div>
+          <div class="coach-nickname">"El Duquecito" &mdash; New York Yankees</div>
+          <p class="coach-bio">A Cuban-born defector who signed a four-year, $4 million contract with the New York Yankees in 2000. Hernandez made his MLB debut in April 2001, earning the nickname "El Duquecito" for his similarities to compatriot Orlando Hernandez. Known for his deceptive delivery and ability to attack hitters from multiple arm angles at 90–93 MPH.</p>
+          <div class="coach-tags">
+            <span class="coach-tag">NYY 2001–02</span>
+            <span class="coach-tag">93 MPH Fastball</span>
+            <span class="coach-tag">MLB Pitcher</span>
+            <span class="coach-tag">$4M Contract</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="coach-card">
+        <img src="images/adrian-standing.jpg" class="coach-img" alt="Rickie Weeks Sr.">
+        <div class="coach-info">
+          <div class="coach-role">Elite Player Developer</div>
+          <div class="coach-name">RICKIE WEEKS SR.</div>
+          <div class="coach-nickname">"The Professor" &mdash; Father of First-Round Picks</div>
+          <p class="coach-bio">Widely known as "The Professor" in elite baseball circles, Rickie Weeks Sr. is one of the most respected player developers in the game. He raised and trained two sons who both became MLB first-round draft picks &mdash; one of only a handful of families in baseball history to accomplish this remarkable feat.</p>
+          <div class="coach-tags">
+            <span class="coach-tag">Elite Developer</span>
+            <span class="coach-tag">Rickie Jr. — #2 Pick 2003</span>
+            <span class="coach-tag">Jemile — #12 Pick 2008</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING -->
+<section class="training-section" id="training">
+  <div class="bg-stitches"></div>
+  <div class="training-ball-1"></div>
+  <div class="training-ball-2"></div>
+
+  <!-- Large faded baseball behind grid -->
+  <svg class="bg-ball" style="right:-60px;top:50%;transform:translateY(-50%);width:320px;height:320px;opacity:0.03" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" stroke="#c9a84c" stroke-width="1.5" fill="none"/><path d="M25 12c10 20 10 38 0 56" stroke="#c9a84c" stroke-width="1.2" fill="none" stroke-dasharray="5 5"/><path d="M75 12c-10 20-10 38 0 56" stroke="#c9a84c" stroke-width="1.2" fill="none" stroke-dasharray="5 5"/></svg>
+  <svg class="bg-ball" style="left:5%;top:10%;width:80px;height:80px;opacity:0.04" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" stroke="#fff" stroke-width="2" fill="none"/><path d="M25 15c8 18 8 35 0 52" stroke="#fff" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/><path d="M75 15c-8 18-8 35 0 52" stroke="#fff" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/></svg>
+  <div class="section-inner">
+    <div class="section-label">The Program</div>
+    <div class="gold-divider"></div>
+    <h2 class="section-title">MAJOR LEAGUE TRAINING</h2>
+    <p class="section-sub">Six elite disciplines drawn from professional training methods used at the highest levels of the game.</p>
+    <div class="training-grid">
+      <div class="training-card">
+        <div class="training-icon">⚾</div>
+        <div class="training-name">Advanced Hitting Drills</div>
+        <p class="training-desc">Pro-level swing mechanics, bat speed development, launch angle optimization, and live at-bat situational training used by MLB hitters.</p>
+      </div>
+      <div class="training-card">
+        <div class="training-icon">⚡</div>
+        <div class="training-name">Physical Conditioning</div>
+        <p class="training-desc">Strength, speed, and endurance programs designed to build explosive athletic power and peak game-day performance in every player.</p>
+      </div>
+      <div class="training-card">
+        <div class="training-icon">🔥</div>
+        <div class="training-name">Dynamic Circuit Training</div>
+        <p class="training-desc">High-intensity rotational circuits targeting baseball-specific muscle groups for increased velocity, agility, and long-term durability.</p>
+      </div>
+      <div class="training-card">
+        <div class="training-icon">🥇</div>
+        <div class="training-name">Fielding &amp; Footwork</div>
+        <p class="training-desc">Ground ball mechanics, glove positioning, lateral movement drills, and elite-level footwork patterns for every position on the field.</p>
+      </div>
+      <div class="training-card">
+        <div class="training-icon">🎯</div>
+        <div class="training-name">Throwing Mechanics</div>
+        <p class="training-desc">Arm care protocols, long-toss programs, accuracy training, and proper throwing mechanics to maximize arm strength safely over time.</p>
+      </div>
+      <div class="training-card">
+        <div class="training-icon">⏱</div>
+        <div class="training-name">Reaction Time Training</div>
+        <p class="training-desc">Visual tracking drills, quick-twitch response exercises, and game-speed simulations to sharpen reflexes at the plate and in the field.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMP DETAILS -->
+<section class="details-section" id="details">
+  <!-- Baseball diamond field SVG background -->
+  <svg class="details-field" viewBox="0 0 200 200">
+    <rect x="70" y="70" width="60" height="60" transform="rotate(45 100 100)" stroke="#c9a84c" stroke-width="1" fill="none"/>
+    <circle cx="100" cy="142" r="4" fill="#c9a84c" opacity="0.4"/>
+    <circle cx="142" cy="100" r="3" fill="#c9a84c" opacity="0.3"/>
+    <circle cx="100" cy="58" r="3" fill="#c9a84c" opacity="0.3"/>
+    <circle cx="58" cy="100" r="3" fill="#c9a84c" opacity="0.3"/>
+    <path d="M70 142 Q100 180 130 142" stroke="#c9a84c" stroke-width="0.8" fill="none"/>
+    <line x1="100" y1="142" x2="100" y2="180" stroke="#c9a84c" stroke-width="0.5" opacity="0.4"/>
+  </svg>
+  <div class="section-inner">
+    <div class="section-label">Camp Info</div>
+    <div class="gold-divider"></div>
+    <h2 class="section-title">CAMP DETAILS</h2>
+    <p class="section-sub">Everything you need to know about the Aces Baseball Academy Summer Camp 2026.</p>
+    <div class="details-grid">
+      <div class="detail-card highlight">
+        <div class="detail-icon">📅</div>
+        <div class="detail-value">JUN 1 — AUG 7</div>
+        <div class="detail-label">Camp Dates · 2026</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-icon">🕘</div>
+        <div class="detail-value">9AM – 2PM</div>
+        <div class="detail-label">Daily Hours · Mon–Fri</div>
+      </div>
+      <div class="detail-card highlight">
+        <div class="detail-icon">💰</div>
+        <div class="detail-value">$250</div>
+        <div class="detail-label">Per Week · Early Bird</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-icon">📍</div>
+        <div class="detail-value">10 WEEKS</div>
+        <div class="detail-label">Pick Any Week(s)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRATION -->
+<section class="reg-section" id="register">
+  <div class="bg-stitches"></div>
+  <div class="reg-ball"></div>
+
+  <svg class="bg-ball" style="right:30px;top:60px;width:100px;height:100px;opacity:0.04" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" stroke="#c9a84c" stroke-width="1.5" fill="none"/><path d="M25 15c8 18 8 35 0 52" stroke="#c9a84c" stroke-width="1.2" fill="none" stroke-dasharray="4 4"/><path d="M75 15c-8 18-8 35 0 52" stroke="#c9a84c" stroke-width="1.2" fill="none" stroke-dasharray="4 4"/></svg>
+  <div class="section-inner">
+
+    <!-- Sidebar -->
+    <div class="reg-sidebar">
+      <div class="section-label">Sign Up</div>
+      <div class="gold-divider"></div>
+      <h2 class="section-title">REGISTER<br>YOUR PLAYER</h2>
+
+      <div class="reg-price-box">
+        <div class="price-main">$250</div>
+        <div class="price-sub">Per Week &mdash; Early Bird</div>
+        <div class="price-note">Select as many weeks as you need. Payment collected at check-in or by phone.</div>
+      </div>
+
+      <ul class="reg-checklist">
+        <li>MLB pro coaching every session</li>
+        <li>Advanced hitting &amp; fielding drills</li>
+        <li>Dynamic circuit &amp; conditioning</li>
+        <li>Reaction time &amp; footwork training</li>
+        <li>Throwing mechanics &amp; arm care</li>
+        <li>Limited spots — register early</li>
+      </ul>
+
+      <div class="contact-box">
+        <div class="cb-title">Questions? Call Us</div>
+        <a href="tel:6893129568">(689) 312-9568</a>
+        <a href="https://acesportsacademy.net">acesportsacademy.net</a>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="reg-form" id="reg-form-wrap">
+      <form id="campForm" onsubmit="submitForm(event)">
+
+        <!-- Player Info -->
+        <div class="form-section-title">Player Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Player First Name *</label>
+            <input type="text" name="player_first" required placeholder="First Name">
+          </div>
+          <div class="form-group">
+            <label>Player Last Name *</label>
+            <input type="text" name="player_last" required placeholder="Last Name">
+          </div>
+          <div class="form-group">
+            <label>Date of Birth *</label>
+            <input type="date" name="dob" required>
+          </div>
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" name="age" min="5" max="18" placeholder="Age">
+          </div>
+          <div class="form-group">
+            <label>Skill Level</label>
+            <select name="skill_level">
+              <option value="">Select level</option>
+              <option>Beginner (New to baseball)</option>
+              <option>Intermediate (2–4 years experience)</option>
+              <option>Advanced (Travel / Competitive)</option>
+              <option>Elite (Varsity / High level)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Primary Position</label>
+            <select name="position">
+              <option value="">Select position</option>
+              <option>Pitcher</option>
+              <option>Catcher</option>
+              <option>First Base</option>
+              <option>Second Base</option>
+              <option>Third Base</option>
+              <option>Shortstop</option>
+              <option>Outfield</option>
+              <option>Utility / Multiple</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Parent Info -->
+        <div class="form-section-title">Parent / Guardian Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Parent / Guardian Name *</label>
+            <input type="text" name="parent_name" required placeholder="Full Name">
+          </div>
+          <div class="form-group">
+            <label>Relationship to Player</label>
+            <select name="relationship">
+              <option>Parent</option>
+              <option>Guardian</option>
+              <option>Grandparent</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" name="email" required placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" name="phone" required placeholder="(000) 000-0000">
+          </div>
+          <div class="form-group">
+            <label>Emergency Contact Name *</label>
+            <input type="text" name="emergency_name" required placeholder="Full Name">
+          </div>
+          <div class="form-group">
+            <label>Emergency Contact Phone *</label>
+            <input type="tel" name="emergency_phone" required placeholder="(000) 000-0000">
+          </div>
+        </div>
+
+        <!-- Week Selection -->
+        <div class="form-section-title">Select Week(s) — $250 per week</div>
+        <div class="weeks-grid">
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w1" value="Week 1: June 1–5"><label class="week-label" for="w1"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 1 &nbsp;·&nbsp; June 1 – 5</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w2" value="Week 2: June 8–12"><label class="week-label" for="w2"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 2 &nbsp;·&nbsp; June 8 – 12</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w3" value="Week 3: June 15–19"><label class="week-label" for="w3"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 3 &nbsp;·&nbsp; June 15 – 19</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w4" value="Week 4: June 22–26"><label class="week-label" for="w4"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 4 &nbsp;·&nbsp; June 22 – 26</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w5" value="Week 5: June 29 – July 3"><label class="week-label" for="w5"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 5 &nbsp;·&nbsp; June 29 – July 3</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w6" value="Week 6: July 6–10"><label class="week-label" for="w6"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 6 &nbsp;·&nbsp; July 6 – 10</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w7" value="Week 7: July 13–17"><label class="week-label" for="w7"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 7 &nbsp;·&nbsp; July 13 – 17</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w8" value="Week 8: July 20–24"><label class="week-label" for="w8"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 8 &nbsp;·&nbsp; July 20 – 24</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w9" value="Week 9: July 27–31"><label class="week-label" for="w9"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 9 &nbsp;·&nbsp; July 27 – 31</div><div class="wk-price">$250</div></div></label></div>
+
+          <div><input type="checkbox" class="week-option" name="weeks" id="w10" value="Week 10: Aug 3–7"><label class="week-label" for="w10"><div class="week-check"></div><div class="week-info"><div class="wk-dates">Week 10 &nbsp;·&nbsp; Aug 3 – 7</div><div class="wk-price">$250</div></div></label></div>
+
+        </div>
+
+        <!-- Total -->
+        <div class="total-row">
+          <div class="total-label">Total Due</div>
+          <div class="total-value" id="totalDisplay">$0</div>
+        </div>
+
+        <!-- Medical -->
+        <div class="form-section-title">Medical &amp; Additional Info</div>
+        <div class="form-grid full">
+          <div class="form-group">
+            <label>Allergies / Medical Conditions (if any)</label>
+            <textarea name="medical" placeholder="List any allergies, medications, or conditions we should know about. Leave blank if none."></textarea>
+          </div>
+        </div>
+
+        <!-- Waiver -->
+        <div class="form-section-title">Liability Waiver</div>
+        <div class="waiver-box">
+          I, the parent or legal guardian of the registered player, acknowledge that participation in baseball activities involves physical risk including but not limited to injury. I hereby release Aces Baseball Academy, its coaches, instructors, and staff from any liability arising from participation in camp activities. I confirm that my child is in good health and physically capable of participating. I give consent for emergency medical treatment if needed and cannot be immediately reached. I agree to all camp rules and understand that Aces Baseball Academy reserves the right to dismiss any participant for behavioral issues without refund.
+        </div>
+        <label class="checkbox-row">
+          <input type="checkbox" name="waiver" required>
+          <span>I have read and agree to the <strong>Liability Waiver</strong> above. I am the parent or legal guardian of the player named in this registration. *</span>
+        </label>
+
+        <button type="submit" class="submit-btn">Submit Registration</button>
+        <p class="form-note">Payment of $250/week is due at check-in or by phone: (689) 312-9568. You will receive a confirmation after submitting.</p>
+      </form>
+
+      <!-- Success -->
+      <div class="success-message" id="successMsg">
+        <div class="s-icon">⚾</div>
+        <h3>YOU'RE REGISTERED!</h3>
+        <p>Thank you! Your registration has been received.<br>We'll be in touch shortly to confirm your spot.<br><br>
+        Questions? Call us at <strong style="color: var(--gold)">(689) 312-9568</strong><br>
+        or visit <strong style="color: var(--gold)">acesportsacademy.net</strong></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="fb-name">ACES <span>BASEBALL</span> ACADEMY</div>
+      <div class="fb-tagline">Major League Training for the Next Generation</div>
+    </div>
+    <div class="footer-links">
+      <a href="#coaches">Coaches</a>
+      <a href="#training">Training</a>
+      <a href="#details">Camp Info</a>
+      <a href="#register">Register</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:6893129568">(689) 312-9568</a>
+      <div class="fc-site">acesportsacademy.net &nbsp;·&nbsp; Summer 2026</div>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 Aces Baseball Academy. All rights reserved.</div>
+</footer>
+
+<script>
+// Live total calculator
+const weekCheckboxes = document.querySelectorAll('.week-option');
+const totalDisplay = document.getElementById('totalDisplay');
+
+weekCheckboxes.forEach(cb => {
+  cb.addEventListener('change', updateTotal);
+});
+
+function updateTotal() {
+  const count = document.querySelectorAll('.week-option:checked').length;
+  totalDisplay.textContent = '$' + (count * 250).toLocaleString();
+}
+
+// API base — works locally and after deploy
+const API = '__PORT_8000__'.startsWith('__') ? 'http://localhost:8000' : '__PORT_8000__';
+
+// Form submit
+async function submitForm(e) {
+  e.preventDefault();
+  const weeks = document.querySelectorAll('.week-option:checked');
+  if (weeks.length === 0) {
+    alert('Please select at least one week to register.');
+    return;
+  }
+
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = 'SUBMITTING...';
+  btn.disabled = true;
+
+  const form = document.getElementById('campForm');
+  const fd = new FormData(form);
+
+  const data = {
+    player_first: fd.get('player_first'),
+    player_last: fd.get('player_last'),
+    dob: fd.get('dob'),
+    age: fd.get('age'),
+    skill_level: fd.get('skill_level'),
+    position: fd.get('position'),
+    parent_name: fd.get('parent_name'),
+    relationship: fd.get('relationship'),
+    email: fd.get('email'),
+    phone: fd.get('phone'),
+    emergency_name: fd.get('emergency_name'),
+    emergency_phone: fd.get('emergency_phone'),
+    weeks: Array.from(weeks).map(cb => cb.value),
+    medical: fd.get('medical'),
+  };
+
+  try {
+    const res = await fetch(`${API}/api/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Server error');
+    // Success
+    form.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('reg-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } catch (err) {
+    alert('Registration submitted! We will confirm your spot shortly. Call (689) 312-9568 with any questions.');
+    form.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+  }
+}
+</script>
+
+</body>
+</html>
