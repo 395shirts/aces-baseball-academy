@@ -3,3 +3,4 @@ __pycache__/
 .env
 data.db
 email-preview.html
+registrations.csv

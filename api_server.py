@@ -4,12 +4,24 @@ Aces Baseball Academy — Registration API
 Receives form submissions and creates contacts in GoHighLevel.
 """
 import asyncio
+import csv
 import json
+import os
 import subprocess
+from datetime import datetime
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
+
+# Backup CSV log of all registrations (never gets lost)
+BACKUP_CSV = "/home/user/workspace/aces-site/registrations.csv"
+BACKUP_FIELDS = [
+    "timestamp", "player_first", "player_last", "age", "dob",
+    "skill_level", "position", "parent_name", "relationship",
+    "email", "phone", "emergency_name", "emergency_phone",
+    "weeks", "total_due", "medical", "ghl_status", "email_status",
+]
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -45,11 +57,45 @@ async def call_tool(source_id: str, tool_name: str, arguments: dict):
     return json.loads(stdout.decode())
 
 
+def append_backup(reg: "Registration", ghl_status: str, email_status: str):
+    """Append every registration to a CSV file - never gets lost."""
+    new_file = not os.path.exists(BACKUP_CSV)
+    try:
+        with open(BACKUP_CSV, "a", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=BACKUP_FIELDS)
+            if new_file:
+                writer.writeheader()
+            writer.writerow({
+                "timestamp": datetime.utcnow().isoformat(),
+                "player_first": reg.player_first,
+                "player_last": reg.player_last,
+                "age": reg.age or "",
+                "dob": reg.dob or "",
+                "skill_level": reg.skill_level or "",
+                "position": reg.position or "",
+                "parent_name": reg.parent_name,
+                "relationship": reg.relationship or "",
+                "email": reg.email,
+                "phone": reg.phone,
+                "emergency_name": reg.emergency_name or "",
+                "emergency_phone": reg.emergency_phone or "",
+                "weeks": "; ".join(reg.weeks) if reg.weeks else "",
+                "total_due": len(reg.weeks) * 250,
+                "medical": reg.medical or "",
+                "ghl_status": ghl_status,
+                "email_status": email_status,
+            })
+    except Exception as e:
+        print(f"[BACKUP] CSV write failed: {e}")
+
+
 @app.post("/api/register")
 async def register(reg: Registration):
     player_name = f"{reg.player_first} {reg.player_last}"
     weeks_str = ", ".join(reg.weeks) if reg.weeks else "Not selected"
     total = len(reg.weeks) * 250
+    ghl_status = "not attempted"
+    email_status = "not attempted"
 
     # Build notes with all registration details
     notes = f"""
@@ -87,7 +133,7 @@ MEDICAL / NOTES
     try:
         result = await call_tool(
             source_id="highlevel_oauth__pipedream",
-            tool_name="highlevel_oauth-create-contact",
+            tool_name="highlevel_oauth-upsert-contact",
             arguments={
                 "name": reg.parent_name,
                 "email": reg.email,
@@ -107,8 +153,10 @@ MEDICAL / NOTES
                 }
             }
         )
+        ghl_status = "created"
         print(f"[GHL] Contact created for {reg.email}")
     except Exception as e:
+        ghl_status = f"failed: {str(e)[:200]}"
         print(f"[GHL] Contact creation failed: {e}")
 
     # 2. Send email notifications to both addresses
@@ -271,18 +319,23 @@ Questions? Call (689) 312-9568 or visit acesportsacademy.net
                     "action": "send",
                     "to": [reg.email],
                     "cc": [],
-                    "bcc": ["launchgloble@gmail.com", "info@acesacademy.net"],
+                    "bcc": ["launchgloble@gmail.com"],
                     "subject": f"You're Registered! \u26be Aces Baseball Academy Summer Camp 2026",
                     "body": confirmation_plain,
                     "html_body": confirmation_html,
                 }
             }
         )
-        print(f"[EMAIL] Confirmation sent to {reg.email} (bcc: launchgloble, info@aces)")
+        email_status = "sent"
+        print(f"[EMAIL] Confirmation sent to {reg.email} (bcc: launchgloble)")
     except Exception as e:
+        email_status = f"failed: {str(e)[:200]}"
         print(f"[EMAIL] Could not send confirmation: {e}")
 
-    return {"success": True, "contact": result}
+    # 4. ALWAYS save a backup record locally (last thing we do)
+    append_backup(reg, ghl_status, email_status)
+
+    return {"success": True, "contact": result, "ghl_status": ghl_status, "email_status": email_status}
 
 
 @app.get("/api/health")
