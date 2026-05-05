@@ -82,26 +82,34 @@ MEDICAL / NOTES
 {reg.medical or 'None'}
 """.strip()
 
-    # 1. Create GHL contact
-    result = await call_tool(
-        source_id="highlevel_oauth__pipedream",
-        tool_name="highlevel_oauth-create-contact",
-        arguments={
-            "name": reg.parent_name,
-            "email": reg.email,
-            "phone": reg.phone,
+    # 1. Create GHL contact (non-blocking - if it fails, emails still go)
+    result = None
+    try:
+        result = await call_tool(
+            source_id="highlevel_oauth__pipedream",
+            tool_name="highlevel_oauth-create-contact",
+            arguments={
+                "name": reg.parent_name,
+                "email": reg.email,
+                "phone": reg.phone,
             "additionalOptions": {
-                "tags": ["Summer Camp 2026", "Baseball Camp", "Aces Baseball Academy"],
-                "customField": {
-                    "player_name": player_name,
-                    "weeks_registered": weeks_str,
-                    "total_due": f"${total}",
-                },
+                "firstName": (reg.parent_name.split(" ")[0] if reg.parent_name else ""),
+                "lastName": (" ".join(reg.parent_name.split(" ")[1:]) if reg.parent_name and len(reg.parent_name.split(" ")) > 1 else ""),
+                "tags": [
+                    "Summer Camp 2026",
+                    "Baseball Camp",
+                    "Aces Baseball Academy",
+                    f"Player: {player_name}",
+                    f"Weeks: {len(reg.weeks)}",
+                    f"Total: ${total}",
+                ],
                 "source": "Landing Page",
-                "notes": notes,
+                }
             }
-        }
-    )
+        )
+        print(f"[GHL] Contact created for {reg.email}")
+    except Exception as e:
+        print(f"[GHL] Contact creation failed: {e}")
 
     # 2. Send email notifications to both addresses
     email_subject = f"New Camp Registration: {player_name} — {len(reg.weeks)} week(s) / ${total}"
