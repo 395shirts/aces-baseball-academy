@@ -882,8 +882,11 @@ function updateTotal() {
   totalDisplay.textContent = '$' + (count * 250).toLocaleString();
 }
 
-// API base — works locally and after deploy
-const API = '__PORT_8000__'.startsWith('__') ? 'http://localhost:8000' : '__PORT_8000__';
+// API base — works locally and after deploy.
+// The placeholder __PORT_8000__ is rewritten to a relative path like "port/8000" at deploy time.
+// Locally (still has placeholder) we use http://localhost:8000.
+const PLACEHOLDER = '__PORT_8000__';
+const API = PLACEHOLDER.startsWith('__') ? 'http://localhost:8000' : PLACEHOLDER;
 
 // Form submit
 async function submitForm(e) {
@@ -924,15 +927,21 @@ async function submitForm(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error('Server error');
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error('Server returned ' + res.status + ': ' + text);
+    }
+    const result = await res.json();
+    console.log('Registration response:', result);
     // Success
     form.style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
     document.getElementById('reg-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
   } catch (err) {
-    alert('Registration submitted! We will confirm your spot shortly. Call (689) 312-9568 with any questions.');
-    form.style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
+    console.error('Registration failed:', err);
+    btn.textContent = 'SUBMIT REGISTRATION';
+    btn.disabled = false;
+    alert('We could not submit your registration. Please call (689) 312-9568 to register by phone, or try again in a moment.\n\nError: ' + err.message);
   }
 }
 </script>
