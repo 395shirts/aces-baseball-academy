@@ -657,6 +657,17 @@ footer {
         <div class="detail-label">Pick Any Week(s)</div>
       </div>
     </div>
+
+    <!-- Location callout -->
+    <div style="margin-top:32px;padding:24px 28px;background:linear-gradient(135deg, rgba(201,168,76,0.14), rgba(201,168,76,0.04));border:1px solid var(--border-gold);border-radius:10px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+      <div style="font-size:30px;">📍</div>
+      <div style="flex:1;min-width:240px;">
+        <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Camp Location</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:#fff;line-height:1.1;">5515 South Orange Ave</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--text-muted);">Pine Castle, FL 32809</div>
+      </div>
+      <a href="https://maps.google.com/?q=5515+South+Orange+Ave+Pine+Castle+FL+32809" target="_blank" rel="noopener" style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:10px 18px;text-decoration:none;">Get Directions</a>
+    </div>
   </div>
 </section>
 
@@ -688,6 +699,11 @@ footer {
         <li>Throwing mechanics &amp; arm care</li>
         <li>Limited spots — register early</li>
       </ul>
+
+      <div class="contact-box">
+        <div class="cb-title">Camp Location</div>
+        <a href="https://maps.google.com/?q=5515+South+Orange+Ave+Pine+Castle+FL+32809" target="_blank" rel="noopener" style="font-size:14px;line-height:1.5;">5515 South Orange Ave<br>Pine Castle, FL 32809</a>
+      </div>
 
       <div class="contact-box">
         <div class="cb-title">Questions? Call Us</div>
@@ -882,11 +898,10 @@ function updateTotal() {
   totalDisplay.textContent = '$' + (count * 250).toLocaleString();
 }
 
-// API base — works locally and after deploy.
-// The placeholder __PORT_8000__ is rewritten to a relative path like "port/8000" at deploy time.
-// Locally (still has placeholder) we use http://localhost:8000.
-const PLACEHOLDER = '__PORT_8000__';
-const API = PLACEHOLDER.startsWith('__') ? 'http://localhost:8000' : PLACEHOLDER;
+// FormSubmit.co - free email forwarding, no signup needed.
+// First submission triggers an email to launchgloble@gmail.com asking to ACTIVATE.
+// After clicking activate once, every future submission emails the registration to that address.
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/launchgloble@gmail.com';
 
 // Form submit
 async function submitForm(e) {
@@ -921,16 +936,35 @@ async function submitForm(e) {
     medical: fd.get('medical'),
   };
 
+  // Format payload for FormSubmit
+  const total = data.weeks.length * 250;
+  const playerName = (data.player_first || '') + ' ' + (data.player_last || '');
+  const payload = {
+    _subject: 'New Camp Registration: ' + playerName + ' (' + data.weeks.length + ' wk / $' + total + ')',
+    _template: 'table',
+    _captcha: 'false',
+    Player_Name: playerName,
+    Player_Age: data.age || '',
+    Player_DOB: data.dob || '',
+    Skill_Level: data.skill_level || '',
+    Position: data.position || '',
+    Parent_Guardian: data.parent_name + ' (' + (data.relationship || 'Parent') + ')',
+    Parent_Email: data.email,
+    Parent_Phone: data.phone,
+    Emergency_Contact: (data.emergency_name || '') + ' - ' + (data.emergency_phone || ''),
+    Weeks_Selected: data.weeks.join(' | '),
+    Number_of_Weeks: data.weeks.length,
+    Total_Due: '$' + total,
+    Medical_Notes: data.medical || 'None',
+  };
+
   try {
-    const res = await fetch(`${API}/api/register`, {
+    const res = await fetch(FORM_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
     });
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error('Server returned ' + res.status + ': ' + text);
-    }
+    if (!res.ok) throw new Error('Submission service returned ' + res.status);
     const result = await res.json();
     console.log('Registration response:', result);
     // Success
@@ -941,7 +975,7 @@ async function submitForm(e) {
     console.error('Registration failed:', err);
     btn.textContent = 'SUBMIT REGISTRATION';
     btn.disabled = false;
-    alert('We could not submit your registration. Please call (689) 312-9568 to register by phone, or try again in a moment.\n\nError: ' + err.message);
+    alert('We could not submit your registration online. Please call (689) 312-9568 to register by phone.\n\nError: ' + err.message);
   }
 }
 </script>

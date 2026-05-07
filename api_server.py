@@ -260,7 +260,7 @@ We are thrilled to confirm that <strong style="color:#0a0e1a;">{player_name}</st
 <tr><td style="padding:0 36px 28px;">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f7f9fc;border-radius:8px;"><tr><td style="padding:20px 24px;">
 <div style="font-size:11px;color:#c9a84c;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:12px;">Camp Info</div>
-<div style="font-size:14px;color:#3a4a5c;line-height:1.8;">&#128197; June 1 - August 7, 2026<br/>&#128336; Monday - Friday, 9:00 AM - 2:00 PM<br/>&#129351; Coaches: Adrian Hernandez (Former NYY) &amp; Rickie Weeks Sr. "The Professor"</div>
+<div style="font-size:14px;color:#3a4a5c;line-height:1.8;">&#128197; June 1 - August 7, 2026<br/>&#128336; Monday - Friday, 9:00 AM - 2:00 PM<br/>&#128205; <a href="https://maps.google.com/?q=5515+South+Orange+Ave+Pine+Castle+FL+32809" style="color:#0a0e1a;font-weight:600;text-decoration:underline;">5515 South Orange Ave, Pine Castle, FL 32809</a><br/>&#129351; Coaches: Adrian Hernandez (Former NYY) &amp; Rickie Weeks Sr. "The Professor"</div>
 </td></tr></table>
 </td></tr>
 
@@ -301,6 +301,7 @@ Payment of ${total} is due at check-in or by phone: (689) 312-9568
 Camp Info:
 - June 1 - August 7, 2026
 - Monday - Friday, 9:00 AM - 2:00 PM
+- Location: 5515 South Orange Ave, Pine Castle, FL 32809
 - Coaches: Adrian Hernandez (Former NYY) & Rickie Weeks Sr. "The Professor"
 
 What to Bring: Baseball glove, bat (optional), athletic shoes, water bottle, sunscreen, snacks/lunch
